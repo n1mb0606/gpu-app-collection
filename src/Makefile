@@ -3,22 +3,28 @@ ifeq ($(GPUAPPS_SETUP_ENVIRONMENT_WAS_RUN), 0)
 $(error You must run "source setup_environment before calling make")
 endif
 
-ifeq ($(CUDA_GT_7), 1)
-all:   pannotia rodinia_2.0-ft proxy-apps dragon-naive dragon-cdp microbench rodinia-3.1 ispass-2009 lonestargpu-2.0 polybench parboil shoc custom_apps deeplearning cutlass GPU_Microbenchmark heterosync Deepbench_nvidia
-else
-ifeq ($(CUDA_GT_4), 1)
-all:   pannotia rodinia_2.0-ft proxy-apps dragon-naive microbench rodinia-3.1 ispass-2009 dragon-cdp lonestargpu-2.0 polybench parboil shoc custom_apps
-else
-all:   pannotia rodinia_2.0-ft proxy-apps microbench rodinia-3.1 ispass-2009 polybench parboil shoc custom_apps
-endif
-endif
+# Skip benchmarks
+# ifeq ($(CUDA_GT_7), 1)
+# all:   pannotia rodinia_2.0-ft proxy-apps dragon-naive dragon-cdp microbench rodinia-3.1 ispass-2009 lonestargpu-2.0 polybench parboil shoc custom_apps deeplearning cutlass GPU_Microbenchmark heterosync Deepbench_nvidia
+# else
+# ifeq ($(CUDA_GT_4), 1)
+# all:   pannotia rodinia_2.0-ft proxy-apps dragon-naive microbench rodinia-3.1 ispass-2009 dragon-cdp lonestargpu-2.0 polybench parboil shoc custom_apps
+# else
+# all:   pannotia rodinia_2.0-ft proxy-apps microbench rodinia-3.1 ispass-2009 polybench parboil shoc custom_apps
+# endif
+# endif
+
+all: mlapp
+
 accelwattch: accelwattch_validation accelwattch_hw_power accelwattch_ubench
 accelwattch_validation: rodinia-3.1_accelwattch_validation parboil_accelwattch_validation cutlass cuda_samples-11.0_accelwattch_validation
 accelwattch_hw_power: rodinia-3.1_hw_power parboil_hw_power cuda_samples-11.0_hw_power
 #Disable clean for now, It has a bug!
 # clean_dragon-naive clean_pannotia clean_proxy-apps
 
-clean: clean_rodinia_2.0-ft clean_dragon-cdp  clean_ispass-2009 clean_lonestargpu-2.0 clean_custom_apps clean_parboil clean_cutlass clean_rodinia-3.1 clean_heterosync clean_UVMSmart_test
+# Skip benchmark clean
+# clean: clean_rodinia_2.0-ft clean_dragon-cdp  clean_ispass-2009 clean_lonestargpu-2.0 clean_custom_apps clean_parboil clean_cutlass clean_rodinia-3.1 clean_heterosync clean_UVMSmart_test
+clean: clean_mlapp
 clean_accelwattch: clean_rodinia-3.1 clean_parboil clean_cutlass clean_cuda_samples clean_cuda_samples_hw_power clean_rodinia-3.1_hw_power clean_parboil_hw_power clean_accelwattch_ubench
 
 clean_data:
@@ -27,6 +33,14 @@ clean_data:
 data:
 	mkdir -p $(BINDIR)/$(BINSUBDIR)/
 	cd ../ && bash ./get_data.sh
+
+# Python ML Test
+mlapp:
+	mkdir -p $(BINDIR)/$(BINSUBDIR)/
+	make -C cuda/mlapp/dnn
+
+clean_mlapp:
+	make clean -C cuda/mlapp/dnn
 
 ###################################################################################################3
 # UVMSmart Benchmarks
