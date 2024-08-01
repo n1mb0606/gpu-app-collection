@@ -1,2 +1,4 @@
+# !/bin/bash
+
 echo "dnntest.sh called" &&
-python3 dnntest.py
+python3 $BINDIR/$BINSUBDIR/dnntest.py
