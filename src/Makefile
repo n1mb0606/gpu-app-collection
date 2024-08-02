@@ -39,6 +39,7 @@ mlapp:
 	mkdir -p $(BINDIR)/$(BINSUBDIR)/
 	make -C cuda/mlapp/dnn
 	make -C cuda/mlapp/mobilenetv3_small
+	make -C cuda/mlapp/resnet50
 
 clean_mlapp:
 	make clean -C cuda/mlapp/dnn
