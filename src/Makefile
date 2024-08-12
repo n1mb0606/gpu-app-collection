@@ -41,6 +41,7 @@ mlapp:
 	make -C cuda/mlapp/mobilenetv3_small
 	make -C cuda/mlapp/resnet50
 	make -C cuda/mlapp/vgg11
+	make -C cuda/mlapp/vit
 
 clean_mlapp:
 	make clean -C cuda/mlapp/dnn
