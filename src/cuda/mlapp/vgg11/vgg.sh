@@ -1,0 +1,1 @@
+python3 $BINDIR/$BINSUBDIR/vgg.py
